@@ -455,11 +455,26 @@ mod tests {
         assert_eq!(moves.len(), 13)
     }
 
-    fn rook_moves() {}
+    #[test]
+    fn rook_moves() {
+        let board = super::Board::board_from_fen_string("8/8/8/8/3r4/8/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 14)
+    }
 
-    fn queen_moves() {}
+    #[test]
+    fn queen_moves() {
+        let board = super::Board::board_from_fen_string("8/8/8/8/3q4/8/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 27)
+    }
 
-    fn king_moves() {}
+    #[test]
+    fn king_moves() {
+        let board = super::Board::board_from_fen_string("8/8/8/8/3k4/8/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 8)
+    }
 
     #[test]
     fn empty_square_has_no_moves() {
