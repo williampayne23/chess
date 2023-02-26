@@ -64,7 +64,12 @@ pub struct Board {
 #[allow(dead_code)]
 impl Board {
     pub fn get_square(&self, x: isize, y: isize) -> &Square {
-        &self.squares[x as usize][y as usize]
+        let x = x as usize;
+        let y = y as usize;
+        if x > 7 || y > 7 {
+            panic!("Invalid square: {}, {}", x, y);
+        }
+        &self.squares[x][y]
     }
 
     fn set_square(&mut self, x: isize, y: isize, square: Square) {
@@ -353,7 +358,10 @@ impl Board {
         let moves = match piece.piece_type {
             PieceType::Pawn => piece_moves::pawn_moves(*self, x, y, piece),
             PieceType::Knight => piece_moves::knight_moves(x, y),
-            _ => Vec::new(),
+            PieceType::Bishop => piece_moves::bishop_moves(*self, x, y),
+            PieceType::Rook => piece_moves::rook_moves(*self, x, y),
+            PieceType::Queen => piece_moves::queen_moves(*self, x, y),
+            PieceType::King => piece_moves::king_moves(x, y),
         };
         self.validate_piece_moves(moves)
     }
@@ -452,7 +460,17 @@ mod tests {
     fn bishop_moves() {
         let board = super::Board::board_from_fen_string("8/8/8/8/3b4/8/8/8 b".to_string());
         let moves = board.get_available_moves_for_square(3, 3);
-        assert_eq!(moves.len(), 13)
+        assert_eq!(moves.len(), 13);
+
+        //Blocked by friendly piece
+        let board = super::Board::board_from_fen_string("8/8/8/8/3b4/4b3/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 10);
+
+        //Blocked by taking piece
+        let board = super::Board::board_from_fen_string("8/8/8/8/3b4/4B3/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 11);
     }
 
     #[test]

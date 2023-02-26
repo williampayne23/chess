@@ -10,7 +10,7 @@ TODO
   - [x] Pawn
     - [ ] En Passant
   - [x] Knight
-  - [ ] Bishop
-  - [ ] Rook
-  - [ ] Queen
-  - [ ] King
+  - [x] Bishop
+  - [x] Rook
+  - [x] Queen
+  - [x] King
