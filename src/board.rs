@@ -330,14 +330,17 @@ impl Board {
         let mut validated_moves: Vec<Move> = Vec::new();
         for m in moves {
             validated_moves.push(m);
+
+            //Moves should not be to squares outside the board
+            if m.to.x > 7 || m.to.x < 0 || m.to.y > 7 || m.to.y < 0 {
+                validated_moves.pop();
+                continue;
+            }
+
             let Some(target_piece) = self.get_square(m.to.x, m.to.y).piece else { continue };
             let Some(piece) = self.get_square(m.from.x, m.from.y).piece else { continue };
             //Moves should not be to pieces of the same color
             if piece.color == target_piece.color {
-                validated_moves.pop();
-            }
-            //Moves should not be to squares outside the board
-            if m.to.x > 7 || m.to.x < 0 || m.to.y > 7 || m.to.y < 0 {
                 validated_moves.pop();
             }
         }
@@ -345,10 +348,11 @@ impl Board {
     }
     #[allow(dead_code)]
     pub fn get_available_moves_for_square(&self, x: isize, y: isize) -> Vec<Move> {
-        use crate::piece_moves::pawn_moves;
+        use crate::piece_moves;
         let Some(piece) = self.get_square(x, y).piece else { return Vec::new() };
         let moves = match piece.piece_type {
-            PieceType::Pawn => pawn_moves(*self, x, y, piece),
+            PieceType::Pawn => piece_moves::pawn_moves(*self, x, y, piece),
+            PieceType::Knight => piece_moves::knight_moves(x, y),
             _ => Vec::new(),
         };
         self.validate_piece_moves(moves)
@@ -430,19 +434,26 @@ mod tests {
         );
     }
 
+    #[test]
     fn knight_moves() {
         let board = super::Board::construct_board();
         let moves = board.get_available_moves_for_square(1, 0);
         assert_eq!(moves.len(), 2);
-        assert_eq!(moves[0].to, super::Coord { x: 2, y: 2 });
-        assert_eq!(moves[1].to, super::Coord { x: 0, y: 2 });
+        //TODO not very robust
+        assert_eq!(moves[1].to, super::Coord { x: 2, y: 2 });
+        assert_eq!(moves[0].to, super::Coord { x: 0, y: 2 });
 
         let board = super::Board::board_from_fen_string("8/8/8/8/3n4/8/8/8 b".to_string());
         let moves = board.get_available_moves_for_square(3, 3);
         assert_eq!(moves.len(), 8);
     }
 
-    fn bishop_moves() {}
+    #[test]
+    fn bishop_moves() {
+        let board = super::Board::board_from_fen_string("8/8/8/8/3b4/8/8/8 b".to_string());
+        let moves = board.get_available_moves_for_square(3, 3);
+        assert_eq!(moves.len(), 13)
+    }
 
     fn rook_moves() {}
 

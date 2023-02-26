@@ -82,26 +82,32 @@ pub fn knight_moves(x: isize, y: isize) -> Vec<Move> {
         from: Coord { x: x, y: y },
         to: Coord { x: x - 1, y: y - 2 },
     });
+
+    moves.push(Move {
+        from: Coord { x: x, y: y },
+        to: Coord { x: x - 1, y: y + 2 },
+    });
+
     moves.push(Move {
         from: Coord { x: x, y: y },
         to: Coord { x: x + 1, y: y + 2 },
     });
-    moves.push(Move {
-        from: Coord { x: x, y: y },
-        to: Coord { x: x + 2, y: y + 1 },
-    });
-    moves.push(Move {
-        from: Coord { x: x, y: y },
-        to: Coord { x: x + 2, y: y - 1 },
-    });
+
     moves.push(Move {
         from: Coord { x: x, y: y },
         to: Coord { x: x + 1, y: y - 2 },
     });
+
     moves.push(Move {
         from: Coord { x: x, y: y },
-        to: Coord { x: x - 1, y: y - 2 },
+        to: Coord { x: x + 2, y: y + 1 },
     });
+
+    moves.push(Move {
+        from: Coord { x: x, y: y },
+        to: Coord { x: x + 2, y: y - 1 },
+    });
+
     moves.push(Move {
         from: Coord { x: x, y: y },
         to: Coord { x: x - 2, y: y - 1 },
@@ -109,10 +115,6 @@ pub fn knight_moves(x: isize, y: isize) -> Vec<Move> {
     moves.push(Move {
         from: Coord { x: x, y: y },
         to: Coord { x: x - 2, y: y + 1 },
-    });
-    moves.push(Move {
-        from: Coord { x: x, y: y },
-        to: Coord { x: x - 1, y: y + 2 },
     });
 
     moves
