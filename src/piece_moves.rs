@@ -120,7 +120,7 @@ pub fn knight_moves(x: isize, y: isize) -> Vec<Move> {
     moves
 }
 
-macro_rules! check_piece {
+macro_rules! check_capture_or_block {
     ($board:ident, $m:ident, $dir:ident, $moves:ident) => {
         if $m.to.x < 0 || $m.to.x > 7 || $m.to.y < 0 || $m.to.y > 7 {
             $dir = false;
@@ -152,28 +152,28 @@ pub fn bishop_moves(board: Board, x: isize, y: isize) -> Vec<Move> {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x + i, y: y + i },
             };
-            check_piece!(board, m, ne, moves);
+            check_capture_or_block!(board, m, ne, moves);
         }
         if nw {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x - i, y: y + i },
             };
-            check_piece!(board, m, nw, moves);
+            check_capture_or_block!(board, m, nw, moves);
         }
         if se {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x + i, y: y - i },
             };
-            check_piece!(board, m, se, moves);
+            check_capture_or_block!(board, m, se, moves);
         }
         if sw {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x - i, y: y - i },
             };
-            check_piece!(board, m, sw, moves);
+            check_capture_or_block!(board, m, sw, moves);
         }
     }
     moves
@@ -192,28 +192,28 @@ pub fn rook_moves(board: Board, x: isize, y: isize) -> Vec<Move> {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x, y: y + i },
             };
-            check_piece!(board, m, n, moves);
+            check_capture_or_block!(board, m, n, moves);
         }
         if s {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x, y: y - i },
             };
-            check_piece!(board, m, s, moves);
+            check_capture_or_block!(board, m, s, moves);
         }
         if e {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x + i, y: y },
             };
-            check_piece!(board, m, e, moves);
+            check_capture_or_block!(board, m, e, moves);
         }
         if w {
             let m = Move {
                 from: Coord { x: x, y: y },
                 to: Coord { x: x - i, y: y },
             };
-            check_piece!(board, m, w, moves);
+            check_capture_or_block!(board, m, w, moves);
         }
     }
 
